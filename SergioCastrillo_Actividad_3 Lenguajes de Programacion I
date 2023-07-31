@@ -1,0 +1,73 @@
+#include <iostream>
+#include <string>
+
+class Empleado {
+private:
+    std::string nombre;
+    std::string apellidoPaterno;
+    std::string apellidoMaterno;
+    std::string fechaNacimiento;
+
+public:
+    Empleado(std::string nombre, std::string apellidoPaterno, std::string apellidoMaterno, std::string fechaNacimiento) {
+        this->nombre = nombre;
+        this->apellidoPaterno = apellidoPaterno;
+        this->apellidoMaterno = apellidoMaterno;
+        this->fechaNacimiento = fechaNacimiento;
+    }
+
+    std::string calcularRFC() {
+        std::string rfc;
+        rfc += apellidoPaterno[0];
+        for (char c : apellidoPaterno) {
+            if (c == 'A' || c == 'E' || c == 'I' || c == 'O' || c == 'U') {
+                rfc += c;
+                break;
+            }
+        }
+
+        if (!apellidoMaterno.empty()) {
+            rfc += apellidoMaterno[0];
+        } else {
+            rfc += 'X';
+        }
+
+        if (nombre[0] == 'A' || nombre[0] == 'E' || nombre[0] == 'I' || nombre[0] == 'O' || nombre[0] == 'U') {
+            rfc += 'X';
+        } else {
+            rfc += nombre[0];
+        }
+
+        rfc += fechaNacimiento.substr(8, 2);
+        rfc += fechaNacimiento.substr(3, 2);
+        rfc += fechaNacimiento.substr(0, 2);
+        rfc += "XXX";
+
+        return rfc;
+    }
+};
+
+int main() {
+    std::string nombre, apellidoPaterno, apellidoMaterno, fechaNacimiento;
+
+    std::cout << "Ingrese el nombre: ";
+    std::getline(std::cin, nombre);
+
+    std::cout << "Ingrese el apellido paterno: ";
+    std::getline(std::cin, apellidoPaterno);
+
+    std::cout << "Ingrese el apellido materno (dejar en blanco si no tiene): ";
+    std::getline(std::cin, apellidoMaterno);
+
+    std::cout << "Ingrese la fecha de nacimiento (formato dd/mm/yyyy): ";
+    std::getline(std::cin, fechaNacimiento);
+
+    Empleado empleado(nombre, apellidoPaterno, apellidoMaterno, fechaNacimiento);
+    std::string rfc = empleado.calcularRFC();
+
+    std::cout << "RFC: " << rfc << std::endl;
+
+    return 0;
+}
+
+
